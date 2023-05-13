@@ -13,7 +13,8 @@ import { RouterOutputs, api } from "~/utils/api";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Image from "next/image";
-import { LoadingPage, LoadingSpinner } from "~/components/LoadingSpinner";
+import { LoadingPage } from "~/components/LoadingSpinner";
+import { useState } from "react";
 
 dayjs.extend(relativeTime);
 
@@ -60,11 +61,15 @@ const Feed = () => {
 };
 
 const Home: NextPage = () => {
-  const { isLoaded: userLoaded } = useUser();
+  const { user } = useUser();
+
+  const [input, setInput] = useState("");
+
+  const { mutate } = api.posts.create.useMutation();
 
   api.posts.getAll.useQuery();
 
-  if (!userLoaded) return <div />;
+  if (!user) return null;
 
   return (
     <>
@@ -86,6 +91,9 @@ const Home: NextPage = () => {
                 <input
                   placeholder="Type some emojis"
                   className="grow bg-transparent"
+                  type="text"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
                 />
               </div>
             </SignedIn>
