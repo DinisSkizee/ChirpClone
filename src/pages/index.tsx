@@ -65,7 +65,14 @@ const Home: NextPage = () => {
 
   const [input, setInput] = useState("");
 
-  const { mutate } = api.posts.create.useMutation();
+  const ctx = api.useContext();
+
+  const { mutate, isLoading: isPosting } = api.posts.create.useMutation({
+    onSuccess: () => {
+      setInput("");
+      void ctx.posts.getAll.invalidate();
+    },
+  });
 
   api.posts.getAll.useQuery();
 
@@ -94,7 +101,9 @@ const Home: NextPage = () => {
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
+                  disabled={isPosting}
                 />
+                <button onClick={() => mutate({ content: input })}>Post</button>
               </div>
             </SignedIn>
             <SignedOut>
