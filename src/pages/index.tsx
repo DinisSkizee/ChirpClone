@@ -1,6 +1,4 @@
 import { type NextPage } from "next";
-import Head from "next/head";
-
 import {
   UserButton,
   useUser,
@@ -8,61 +6,33 @@ import {
   SignedIn,
   SignedOut,
 } from "@clerk/nextjs";
-import { RouterOutputs, api } from "~/utils/api";
+import { api } from "~/utils/api";
 import { toast } from "react-hot-toast";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Image from "next/image";
-import { LoadingPage, LoadingSpinner } from "~/components/LoadingSpinner";
+import { LoadingPage, LoadingSpinner } from "~/components/LoadingPage";
 import { useState } from "react";
 import { PageLayout } from "~/components/PageLayout";
-import Link from "next/link";
+import { PostView } from "~/components/PostView";
 
 dayjs.extend(relativeTime);
-
-type PostWithUser = RouterOutputs["posts"]["getAll"][number];
-
-const PostView = (props: PostWithUser) => {
-  const { post, author } = props;
-  return (
-    <div
-      key={post.id}
-      className="flex items-center gap-3 border-b border-slate-400 p-4"
-    >
-      <Image
-        src={author.profileImageUrl}
-        alt="pic"
-        className="rounded-full"
-        height={56}
-        width={56}
-      />
-      <div className="flex flex-col">
-        <div className="flex gap-1 text-slate-300">
-          <Link href={`/@${author.username}`}>
-            <span className="font-bold">{`@${author?.username}`}</span>
-          </Link>
-          <Link href={`/post/${post.id}`}>
-            <span className="font-thin">{`·  ${dayjs(
-              post.createdAt
-            ).fromNow()}`}</span>
-          </Link>
-        </div>
-        <span className="text-2xl">{post.content}</span>
-      </div>
-    </div>
-  );
-};
 
 const Feed = () => {
   const { data, isLoading: postsLoading } = api.posts.getAll.useQuery();
 
-  if (postsLoading) return <LoadingPage />;
+  if (postsLoading)
+    return (
+      <div className="flex grow">
+        <LoadingPage />
+      </div>
+    );
 
   if (!data) return <div>Something went wrong</div>;
 
   return (
-    <div>
-      {data?.map((fullPost) => (
+    <div className="flex grow flex-col overflow-y-scroll">
+      {data.map((fullPost) => (
         <PostView {...fullPost} key={fullPost.post.id} />
       ))}
     </div>
@@ -97,15 +67,6 @@ const Home: NextPage = () => {
 
   return (
     <PageLayout>
-      <Head>
-        <title>Chirp-Clone</title>
-        <meta name="description" content="Chirp-Clone" />
-        <link rel="icon" href="/favicon.ico" />
-        <link
-          href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css"
-          rel="stylesheet"
-        />
-      </Head>
       <div className="flex border-b border-slate-400  p-4">
         <SignedIn>
           <div className="flex w-[100%] gap-3">
