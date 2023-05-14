@@ -117,7 +117,7 @@ const Home: NextPage = () => {
       </div>
       <Feed />
       <div className="flex items-center justify-between p-4 text-xl">
-        <a href="https://github.com/t3dotgg/chirp">
+        <a href="https://github.com/dinisskizee/chirpclone">
           <div className="flex items-center justify-center gap-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -132,7 +132,7 @@ const Home: NextPage = () => {
           </div>
         </a>
         <span>
-          <a href="https://patreon.com/t3dotgg">🦜 Chirp-Clone</a>
+          <a href="https://www.buymeacoffee.com/dinissilva">🦜 Chirp-Clone</a>
         </span>
       </div>
     </PageLayout>

@@ -31,11 +31,11 @@ const ProfilePage: NextPage<{ username: string }> = ({ username }) => {
   });
 
   if (!data) return <div>404</div>;
-
+  const title = data.username ? `@${data.username}` : "User Profile";
   return (
     <>
       <Head>
-        <title>{}</title>
+        <title>{title}</title>
         <meta name="description" content="Chirp-Clone" />
         <link
           href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css"
@@ -43,7 +43,7 @@ const ProfilePage: NextPage<{ username: string }> = ({ username }) => {
         />
       </Head>
       <PageLayout>
-        <div className="flex flex-col h-36 bg-slate-600">
+        <div className="flex h-36 flex-col bg-slate-600">
           <Image
             src={data.profileImageUrl}
             alt={`${
@@ -51,14 +51,14 @@ const ProfilePage: NextPage<{ username: string }> = ({ username }) => {
             }'s profile pic`}
             width={128}
             height={128}
-            className="relative h-fit mt-[80px] ml-4 rounded-full border-4 border-black bg-black"
+            className="relative ml-4 mt-[80px] h-fit rounded-full border-4 border-black bg-black"
           />
-        <div className="h-[64px]"></div>
-        <div className="p-4 text-2xl font-bold">{`@${
-          data.username ?? data.externalUsername ?? "unknown"
-        }`}</div>
-        <div className="w-full border-b border-slate-400" />
-        <ProfileFeed userId={data.id} />
+          <div className="h-[64px]"></div>
+          <div className="p-4 text-2xl font-bold">{`@${
+            data.username ?? data.externalUsername ?? "unknown"
+          }`}</div>
+          <div className="w-full border-b border-slate-400" />
+          <ProfileFeed userId={data.id} />
         </div>
       </PageLayout>
     </>
