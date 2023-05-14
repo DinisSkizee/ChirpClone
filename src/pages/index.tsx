@@ -16,6 +16,7 @@ import Image from "next/image";
 import { LoadingPage, LoadingSpinner } from "~/components/LoadingSpinner";
 import { useState } from "react";
 import { PageLayout } from "~/components/PageLayout";
+import Link from "next/link";
 
 dayjs.extend(relativeTime);
 
@@ -36,11 +37,17 @@ const PostView = (props: PostWithUser) => {
         width={56}
       />
       <div className="flex flex-col">
-        <div className="flex gap-1 text-slate-200">
-          <span className="font-bold">{`@${author?.username}`}</span>
-          <span>{`·  ${dayjs(post.createdAt).fromNow()}`}</span>
+        <div className="flex gap-1 text-slate-300">
+          <Link href={`/@${author.username}`}>
+            <span className="font-bold">{`@${author?.username}`}</span>
+          </Link>
+          <Link href={`/post/${post.id}`}>
+            <span className="font-thin">{`·  ${dayjs(
+              post.createdAt
+            ).fromNow()}`}</span>
+          </Link>
         </div>
-        {post.content}
+        <span className="text-2xl">{post.content}</span>
       </div>
     </div>
   );
